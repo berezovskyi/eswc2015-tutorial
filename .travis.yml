@@ -11,9 +11,6 @@ before_install:
 - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 script:
 - mvn clean install -B -Dcoverage.reports.dir=`pwd`/target/all --settings target/config/ci/settings.xml
-- if [ ${TRAVIS_PULL_REQUEST} = 'false' ]; then mvn sonar:sonar -B -Dsonar.branch=$TRAVIS_BRANCH
-  -Dcoverage.reports.dir=`pwd`/target/all --settings target/config/ci/settings.xml;
-  fi
 - mkdir /tmp/cache-trick
 - mv $HOME/.m2/repository/org/ldp4j /tmp/cache-trick/
 env:
