@@ -6,25 +6,10 @@ cache:
 language: java
 jdk:
 - oraclejdk7
-notifications:
-  email:
-    recipients:
-    - ldp4j-commits@googlegroups.com
-    on_success: always
-    on_failure: always
 before_install:
 - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-before_script:
-- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in target/config/ci/secring.gpg.enc
-  -out local.secring.gpg -d
-- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in target/config/ci/pubring.gpg.enc
-  -out local.pubring.gpg -d
 script:
-- if [ ${TRAVIS_BRANCH} == 'master' ] && [ ${TRAVIS_PULL_REQUEST} = 'false' ]; then
-  mvn clean deploy -B -Dcodebase.directory=`pwd` -Dcoverage.reports.dir=`pwd`/target/all
-  --settings target/config/ci/settings.xml; else mvn clean install -B
-  -Dcoverage.reports.dir=`pwd`/target/all --settings target/config/ci/settings.xml;
-  fi
+- mvn clean install -B -Dcoverage.reports.dir=`pwd`/target/all --settings target/config/ci/settings.xml
 - if [ ${TRAVIS_PULL_REQUEST} = 'false' ]; then mvn sonar:sonar -B -Dsonar.branch=$TRAVIS_BRANCH
   -Dcoverage.reports.dir=`pwd`/target/all --settings target/config/ci/settings.xml;
   fi
